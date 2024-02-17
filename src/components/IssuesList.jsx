@@ -15,6 +15,7 @@ export default function IssuesList({ labels, status }) {
       );
       return response.json();
     },
+    staleTime: 1000 * 60,
   });
 
   const searchQuery = useQuery(
