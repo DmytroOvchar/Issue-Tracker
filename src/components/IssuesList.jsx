@@ -19,7 +19,6 @@ export default function IssuesList({ labels, status }) {
 
       return fetchWithError(`/api/issues?${labelsString}${statusString}`);
     },
-    staleTime: 1000 * 60,
   });
 
   const searchQuery = useQuery(
