@@ -13,18 +13,22 @@ export default function IssuesList({ labels, status }) {
     error,
   } = useQuery({
     queryKey: ["issues", { labels, status }],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       const labelsString = labels.map((label) => `labels[]=${label}`).join("&");
       const statusString = status ? `&status=${status}` : "";
 
-      return fetchWithError(`/api/issues?${labelsString}${statusString}`);
+      return fetchWithError(`/api/issues?${labelsString}${statusString}`, {
+        signal,
+      });
     },
   });
 
   const searchQuery = useQuery(
     ["issues", "search", searchValue],
-    () =>
-      fetch(`/api/search/issues?q=${searchValue}`).then((res) => res.json()),
+    ({ signal }) =>
+      fetch(`/api/search/issues?q=${searchValue}`, { signal }).then((res) =>
+        res.json()
+      ),
     {
       enabled: searchValue.length > 0,
     }
