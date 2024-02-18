@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { IssueItem } from "./IssueItem";
 import { useState } from "react";
+import Loader from "./Loader";
 import fetchWithError from "../helpers/fetchWithError";
 
 export default function IssuesList({ labels, status }) {
@@ -11,6 +12,7 @@ export default function IssuesList({ labels, status }) {
     isLoading: isIssuesLoading,
     isError,
     error,
+    fetchStatus,
   } = useQuery({
     queryKey: ["issues", { labels, status }],
     queryFn: async ({ signal }) => {
@@ -55,8 +57,7 @@ export default function IssuesList({ labels, status }) {
           }}
         />
       </form>
-
-      <h1>Issues List</h1>
+      <h2>Issues List {fetchStatus === "fetching" ? <Loader /> : null}</h2>
       {isIssuesLoading ? (
         <p>Loading...</p>
       ) : isError ? (
