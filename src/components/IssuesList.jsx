@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { IssueItem } from "./IssueItem";
 import { useState } from "react";
 import Loader from "./Loader";
@@ -6,6 +6,7 @@ import fetchWithError from "../helpers/fetchWithError";
 
 export default function IssuesList({ labels, status }) {
   const [searchValue, setSearchValue] = useState("");
+  const queryClient = useQueryClient();
 
   const {
     data: issues,
@@ -19,9 +20,18 @@ export default function IssuesList({ labels, status }) {
       const labelsString = labels.map((label) => `labels[]=${label}`).join("&");
       const statusString = status ? `&status=${status}` : "";
 
-      return fetchWithError(`/api/issues?${labelsString}${statusString}`, {
-        signal,
+      const res = await fetchWithError(
+        `/api/issues?${labelsString}${statusString}`,
+        {
+          signal,
+        }
+      );
+
+      res.forEach((issue) => {
+        queryClient.setQueryData(["issues", issue.number.toString()], issue);
       });
+
+      return res;
     },
   });
 
