@@ -1,8 +1,9 @@
 import IssuesList from "../components/IssuesList";
 import LabelList from "../components/LabelList";
 import { useState } from "react";
-import { StatusSelect } from "../components/StatusSelected";
+
 import { Link } from "react-router-dom";
+import { StatusSelect } from "../components/StatusSelect";
 
 export default function Issues() {
   const [labels, setLabels] = useState([]);
