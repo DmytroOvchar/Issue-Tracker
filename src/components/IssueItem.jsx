@@ -27,9 +27,9 @@ export function IssueItem({
           fetchWithError(`/api/issues/${number}`)
         );
         //preloading comments
-        queryClient.prefetchQuery(
+        queryClient.prefetchInfiniteQuery(
           ["issues", number.toString(), "comments"],
-          () => fetchWithError(`/api/issues/${number}/comments`)
+          () => fetchWithError(`/api/issues/${number}/comments?page=1`)
         );
       }}
     >
